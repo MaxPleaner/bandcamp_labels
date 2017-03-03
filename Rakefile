@@ -6,6 +6,7 @@ require 'json'
 require 'colored'
 require "awesome_print"
 require "active_support/all"
+require 'random-word'
 
 task :get_labels, [:query] do |t, args|
   query = args[:query]
@@ -16,5 +17,18 @@ task :get_labels, [:query] do |t, args|
       content: label.content,
       tags: label.tags
     )
+  end
+end
+
+task :seed_random do
+  sources = [
+    RandomWord.adjs,
+    RandomWord.nouns
+  ]
+  loop do
+    query = sources.sample.next
+    puts query
+    Rake::Task[:get_labels].invoke(query)
+    Rake::Task[:get_labels].reenable
   end
 end

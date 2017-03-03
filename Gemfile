@@ -34,3 +34,6 @@ gem "awesome_print"
 
 # active support (ruby lang extensions)
 gem "activesupport"
+
+# random word (for seeding with labels)
+gem 'random-word'

@@ -9,6 +9,7 @@ class GetBandcampLabels
   class << self
     private
     def get_labels(query, page)
+      sleep 0.5
       puts "querying #{page}".green
       objects = JSON.parse(`coffee get_bc_page.coffee #{query} #{page}`)
       labels = objects.select do |obj|
@@ -19,9 +20,10 @@ class GetBandcampLabels
     def format_res(results, query)
       results.map.with_index do |res|
         OpenStruct.new.tap do |obj|
-          obj[:name] = res["name"] rescue byebug
+          obj[:name] = res["name"]
           puts "name: #{obj[:name]}".blue
-          obj[:tags] = res["tags"].concat [query]
+          obj[:tags] = res["tags"]
+          obj[:tags].concat(["unknown"]) if obj[:tags].empty?
           obj[:content] = <<-MD
             <a href='#{res["url"]}'>#{res["name"]}</a>
             <br>

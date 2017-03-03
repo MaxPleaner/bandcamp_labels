@@ -83,7 +83,7 @@ buildNavbarTagsMenu = ($grid, $metadata) ->
     tags = JSON.parse(nodeJson)['tags']
     $node.parents(".grid-item").data("tags", tags)
     tags
-  tags = Array.from(new Set(tags)).sort()
+  tags = Array.from(new Set(tags)).sort()g
   tags.forEach (tag) ->
       tagLink = $("<a></a>").html(tag)
                             .addClass("tagLink")
