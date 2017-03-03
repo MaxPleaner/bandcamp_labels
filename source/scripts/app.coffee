@@ -106,7 +106,7 @@ showAllButtonOnClick = ($grid, e) ->
   e.preventDefault()
 
 setupImagesOnHover = ($gridItems) ->
-  $gridItems.find("img").on "hover", (e) ->
+  $gridItems.find("img").on "mouseenter", (e) ->
     $img = $ e.currentTarget
     $img.attr("src", $img.data('src'))
   
