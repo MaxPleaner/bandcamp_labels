@@ -7,7 +7,9 @@ class GetBandcampLabels
   end
 
   class << self
+
     private
+
     def get_labels(query, page)
       sleep 0.5
       puts "querying #{page}".green
@@ -17,10 +19,11 @@ class GetBandcampLabels
       end
       [labels, objects.empty?]
     end
+
     def format_res(results, query)
       results.map.with_index do |res|
         OpenStruct.new.tap do |obj|
-          obj[:name] = res["name"]
+          obj[:name] = Shellwords.escape res["name"]
           puts "name: #{obj[:name]}".blue
           obj[:tags] = res["tags"]
           obj[:tags].concat(["unknown"]) if obj[:tags].empty?
@@ -36,6 +39,7 @@ class GetBandcampLabels
         end
       end
     end
+
   end
 
 end
