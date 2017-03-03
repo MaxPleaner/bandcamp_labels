@@ -2,15 +2,12 @@ require 'nokogiri'
 require 'open-uri'
 
 module Seed
-  def self.create(options={})
-    # convert keys to symbols
-    options = options.reduce({}) { |new_options, (k,v)| new_options.tap { |x| x[k.to_sym] = v} }
-    name, content, tags = options.values_at(:name, :content, :tags)
+  def self.create(name:,content:,tags:)
     raise ArgumentError unless [name, content].all? { |x| x.is_a?(String) && x.length > 0 }
     raise ArgumentError unless tags.is_a?(Array) && tags.length > 0
     path = (ENV["STATIC_SEED_PATH"] || `pwd`.chomp) + "/source/markdown/#{name}.md.erb"
     metadata_string = "**METADATA**\nTAGS: #{tags.join(", ")}\n****\n"
-    File.open(path, 'w') { |file| file.write("#{metadata_string}#{content}") }
+    File.open(path, 'w') { |file| file.write("#{metadata_string}#{content.strip_heredoc}") }
   end
   
 end

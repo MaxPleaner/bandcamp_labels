@@ -1,0 +1,23 @@
+{
+  "name": "bandcamp_labels",
+  "version": "1.0.0",
+  "description": "showing the different labels on bandcamp, including genre",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bandcamp-scraper": "^1.1.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/maxpleaner/static.git"
+  },
+  "bugs": {
+    "url": "https://github.com/maxpleaner/static/issues"
+  },
+  "homepage": "https://github.com/maxpleaner/static#readme"
+}

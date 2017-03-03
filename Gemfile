@@ -10,6 +10,7 @@ gem "byebug"
 gem "slim"
 gem "sass"
 gem "coffee-script"
+gem "redcarpet"
 gem "therubyracer"
 
 # guard / livereload
@@ -18,3 +19,18 @@ gem "childprocess"
 gem 'guard-livereload', '~> 2.5', require: false
 gem 'rb-inotify'
 gem 'livereload'
+
+# One off task
+gem 'rake'
+
+# passing data from coffeescript to ruby
+gem 'json'
+
+# colored text
+gem 'colored'
+
+# awesome print
+gem "awesome_print"
+
+# active support (ruby lang extensions)
+gem "activesupport"

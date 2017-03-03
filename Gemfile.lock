@@ -1,6 +1,12 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    activesupport (5.0.1)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (~> 0.7)
+      minitest (~> 5.1)
+      tzinfo (~> 1.1)
+    awesome_print (1.7.0)
     byebug (9.0.5)
     childprocess (0.5.9)
       ffi (~> 1.0, >= 1.0.11)
@@ -9,6 +15,8 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
+    colored (1.2)
+    concurrent-ruby (1.0.4)
     em-dir-watcher (0.9.4)
     em-websocket (0.5.1)
       eventmachine (>= 0.12.9)
@@ -33,6 +41,7 @@ GEM
       guard-compat (~> 1.0)
       multi_json (~> 1.8)
     http_parser.rb (0.6.0)
+    i18n (0.8.0)
     json (2.0.2)
     libv8 (3.16.14.15)
     listen (3.1.5)
@@ -45,6 +54,7 @@ GEM
       json (>= 1.5.3)
     lumberjack (1.0.10)
     method_source (0.8.2)
+    minitest (5.10.1)
     multi_json (1.12.1)
     nenv (0.3.0)
     notiffany (0.1.1)
@@ -54,9 +64,11 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    rake (12.0.0)
     rb-fsevent (0.9.7)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
+    redcarpet (3.4.0)
     ref (2.0.0)
     ruby_dep (1.4.0)
     sass (3.4.22)
@@ -70,22 +82,31 @@ GEM
       libv8 (~> 3.16.14.0)
       ref
     thor (0.19.1)
+    thread_safe (0.3.5)
     tilt (2.0.5)
+    tzinfo (1.2.2)
+      thread_safe (~> 0.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport
+  awesome_print
   byebug
   childprocess
   coffee-script
+  colored
   guard
   guard-livereload (~> 2.5)
+  json
   livereload
+  rake
   rb-inotify
+  redcarpet
   sass
   slim
   therubyracer
 
 BUNDLED WITH
-   1.12.5
+   1.14.3
