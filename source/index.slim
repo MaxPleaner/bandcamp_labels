@@ -3,7 +3,7 @@ html
 
   head
 
-    title static
+    title bandcamp labels
     link rel='stylesheet' href='./styles/app.css'
     link rel='stylesheet' href='./styles/pace.css'
     script src='./scripts/jquery-3.1.0.min.js'
@@ -17,8 +17,10 @@ html
     div#intro
       h4 Welcome to the app
       h5
-        a href='http://github.com/maxpleaner/static'
+        a href='http://github.com/maxpleaner/bandcamp_labels'
           | project source
+      h5
+        | hover over images boxes to load them
       
     container#all-content
       == render("_nav.slim")

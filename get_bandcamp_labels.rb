@@ -27,7 +27,7 @@ class GetBandcampLabels
           obj[:content] = <<-MD
             <a href='#{res["url"]}'>#{res["name"]}</a>
             <br>
-            <img src='#{res["imageUrl"]}' />
+            <img data-src='#{res["imageUrl"]}' />
             <br>
             tags: #{obj[:tags].join(",")}
           MD

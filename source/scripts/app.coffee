@@ -104,6 +104,11 @@ showAllButtonOnClick = ($grid, e) ->
   window.currentTag = undefined
   filterGrid($grid)
   e.preventDefault()
+
+setupImagesOnHover = ($gridItems) ->
+  $gridItems.find("img").on "hover", (e) ->
+    $img = $ e.currentTarget
+    $img.attr("src", $img.data('src'))
   
 $ () ->
 
@@ -115,5 +120,5 @@ $ () ->
   setupMetadata($grid, $metadata)
   loadInitialState($grid)
   setupGrid($grid, $gridItems, $togglingContent)
-
+  setupImagesOnHover($gridItems)
     
