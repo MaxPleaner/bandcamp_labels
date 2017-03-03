@@ -17,5 +17,4 @@ task :get_labels, [:query] do |t, args|
       tags: label.tags
     )
   end
-  `ruby gen.rb`
 end

@@ -79,6 +79,7 @@ buildNavbarTagsMenu = ($grid, $metadata) ->
   tags = $.map $metadata, (node) ->
     $node = $ node
     nodeJson = $node.text()
+    console.log(nodeJson)
     tags = JSON.parse(nodeJson)['tags']
     $node.parents(".grid-item").data("tags", tags)
     tags

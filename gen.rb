@@ -67,8 +67,9 @@ class Gen
   # maintains the same directory structure. Only changes source/ to dist/
   def copy_other_files
     Dir.glob("./source/**/*").each do |path|
-      extensions_to_ignore = ["slim", "coffee", "css", "js", "sass"]
-      next if extensions_to_ignore.any? { |ext| path.split(".")[-1].eql?(ext) }
+      next if File.directory? path
+      extensions_to_ignore = ["slim", "coffee", "css", "js", "sass", "erb"]
+      next if extensions_to_ignore.any? { |ext| path.ends_with? ext }
       dest_path = path.gsub("source/", "dist/")
       dest_folder = dest_path.split("/")[0..-2].join("/")
       `mkdir -p #{dest_folder}`
@@ -99,6 +100,7 @@ class Gen
   # based on the filename, determine how to preprocess the file
   # and save it to dist/
   def preprocess_any_single_file(path)
+    puts path
     case filename_from_path(path).split(".")[1..-1].join
     when "coffee"
       preprocess_coffee_file_and_save(path)
@@ -121,12 +123,14 @@ class Gen
   
   # .css file paths array
   def css_files
-    exclude_dist_folder(Dir.glob("./**/*.css"))
+    exclude_dist_folder(Dir.glob("./source/**/*.css"))
   end
   
   # .js file paths array
   def js_files
-    exclude_dist_folder(Dir.glob("./**/*.js"))
+    exclude_dist_folder(
+      Dir.glob("./source/**/*.js")
+    )
   end
   
   # .js files are copied to dist/ without precompilation
@@ -165,12 +169,12 @@ class Gen
   
   # .slim file paths array
   def slim_files # => array
-    exclude_partials(exclude_dist_folder(Dir.glob("./**/*.slim")))
+    exclude_partials(exclude_dist_folder(Dir.glob("./source/**/*.slim")))
   end
   
   # .sass file paths array
   def sass_files # => array
-    exclude_dist_folder(Dir.glob("./**/*.sass"))
+    exclude_dist_folder(Dir.glob("./source/**/*.sass"))
   end
   
   # filter filepaths array to exclude files beginning with an underscore
@@ -180,7 +184,7 @@ class Gen
   
   #.coffee file paths array
   def coffee_files # => array
-    exclude_dist_folder(Dir.glob("./**/*.coffee"))
+    exclude_dist_folder(Dir.glob("./source/**/*.coffee"))
   end
   
   # gets the filename from a file path.

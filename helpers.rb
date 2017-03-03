@@ -55,7 +55,7 @@ module Helpers
     metadata_string.split("\n").reduce({}) do |result, line|
       key, val = line.split(": ")
       if [key, val].none? { |str| str.blank? }
-        result[key.strip.downcase.to_sym] = val.strip.split(", ")
+        result[key.strip.downcase.to_sym] = val.strip.split(/\,\s*/)
       end
       result
     end
