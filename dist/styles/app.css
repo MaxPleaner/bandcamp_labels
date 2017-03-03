@@ -63,3 +63,7 @@ hr {
   background-color: rgba(253, 195, 188, 0.4);
   padding: 10px;
   margin: 20px; }
+
+img {
+  width: 100px;
+  height: 100px; }
