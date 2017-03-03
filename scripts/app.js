@@ -114,7 +114,7 @@
       $node.parents(".grid-item").data("tags", tags);
       return tags;
     });
-    tags = Array.from(new Set(tags));
+    tags = Array.from(new Set(tags)).sort();
     tags.forEach(function(tag) {
       var tagLink;
       tagLink = $("<a></a>").html(tag).addClass("tagLink").attr("href", "#");
