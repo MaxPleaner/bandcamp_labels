@@ -1,5 +1,5 @@
 (function() {
-  var addButtonToShowAll, buildNavbarTagsMenu, filterGrid, gridItemOnClick, gridItemOnMouseenter, gridItemOnMouseleave, hideAllContent, isotopeFilterFn, loadInitialState, metadataOnClick, refreshGrid, setupGrid, setupMetadata, showAllButtonOnClick, togglingContentOnMouseenter, togglingContentOnMouseleave;
+  var addButtonToShowAll, buildNavbarTagsMenu, filterGrid, gridItemOnClick, gridItemOnMouseenter, gridItemOnMouseleave, hideAllContent, isotopeFilterFn, loadInitialState, metadataOnClick, refreshGrid, setupGrid, setupImagesOnHover, setupMetadata, showAllButtonOnClick, togglingContentOnMouseenter, togglingContentOnMouseleave;
 
   gridItemOnClick = function($grid, e) {
     var $content, $el, contentAlreadyHidden;
@@ -138,6 +138,14 @@
     return e.preventDefault();
   };
 
+  setupImagesOnHover = function($gridItems) {
+    return $gridItems.find("img").on("hover", function(e) {
+      var $img;
+      $img = $(e.currentTarget);
+      return $img.attr("src", $img.data('src'));
+    });
+  };
+
   $(function() {
     var $grid, $gridItems, $metadata, $togglingContent;
     $grid = $(".grid");
@@ -146,7 +154,8 @@
     $metadata = $grid.find(".metadata");
     setupMetadata($grid, $metadata);
     loadInitialState($grid);
-    return setupGrid($grid, $gridItems, $togglingContent);
+    setupGrid($grid, $gridItems, $togglingContent);
+    return setupImagesOnHover($gridItems);
   });
 
 }).call(this);
