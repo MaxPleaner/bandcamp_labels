@@ -139,7 +139,7 @@
   };
 
   setupImagesOnHover = function($gridItems) {
-    return $gridItems.find("img").on("hover", function(e) {
+    return $gridItems.find("img").on("mouseenter", function(e) {
       var $img;
       $img = $(e.currentTarget);
       return $img.attr("src", $img.data('src'));
