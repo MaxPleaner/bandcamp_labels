@@ -26,8 +26,15 @@ task :seed_random do
     RandomWord.nouns
   ]
   loop do
-    query = sources.sample.next
     puts query
+    Rake::Task[:get_labels].invoke(query)
+    Rake::Task[:get_labels].reenable
+  end
+end
+
+task :seed_most_common_words do
+  File.readlines("most_common_words.txt").each do |query|
+    puts query.chomp!
     Rake::Task[:get_labels].invoke(query)
     Rake::Task[:get_labels].reenable
   end
