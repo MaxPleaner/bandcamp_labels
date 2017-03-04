@@ -72,7 +72,7 @@ setupMetadata = ($grid, $metadata) ->
   $metadata.addClass "hidden"
   $navbarTagsMenu = buildNavbarTagsMenu($grid, $metadata)
   $nav.append($navbarTagsMenu)
-  $nav.on ".tagLink", "click", curry(metadataOnClick)($grid)
+  $(".tagLink").on "click", curry(metadataOnClick)($grid)
 
 window.tagLinks = {}
 buildNavbarTagsMenu = ($grid, $metadata) ->
@@ -84,13 +84,13 @@ buildNavbarTagsMenu = ($grid, $metadata) ->
     $node.parents(".grid-item").data("tags", tags)
     tags
   tags = Array.from(new Set(tags)).sort()
-  tags.forEach (tag, tdx) ->
+  tags.forEach (tag, idx) ->
       indexTagForSearch(tag, idx)
       $tagLink = $("<a></a>").html(tag)
                             .addClass("tagLink")
                             .addClass("hidden")
                             .attr("href", "#")
-      tagLinks[tag] = $tagLink
+      tagLinks[idx] = $tagLink # The reference to look it up after searching
       $navbarTagsMenu.append($tagLink)
   addButtonToShowAll($grid, $navbarTagsMenu)
   return $navbarTagsMenu
@@ -132,28 +132,32 @@ initTagSearch = ->
     last_search_text_typed_at = (new Date()).getTime()
     setTimeout ->
       current_time = (new Date()).getTime()
-      if current_time - last_search_text_typed_at > 250
+      if current_time - last_search_text_typed_at > 500
         text = $search_input.val()
         results = lunrTagsIndex.search text
         tags_to_hide = showingTags.forEach ($tag) -> $tag.hide()
-        window.showingTags = []
-        tag_to_show = results.map (result_tag) ->
-          tagLinks[result_tag]
-        debugger
-    , 250
+        tags_to_show = results.map (result) ->
+          tagLinks[result.ref]
+        tags_to_show.forEach ($tag) -> $tag.show()
+        window.showingTags = tags_to_show
+    , 500
   
 $ () ->
 
-  $grid            = $ ".grid"
-  $gridItems       = $grid.find ".grid-item"
-  $togglingContent = $gridItems.find ".content"
-  $metadata        = $grid.find ".metadata"
-  $nav             = $("#nav")
+  window.$grid            = $ ".grid"
+  window.$gridItems       = $grid.find ".grid-item"
+  window.$togglingContent = $gridItems.find ".content"
+  window.$metadata        = $grid.find ".metadata"
+  window.$nav             = $("#nav")
   
+  initLunrSearchIndexes()
   setupMetadata($grid, $metadata)
   loadInitialState($grid)
   setupGrid($grid, $gridItems, $togglingContent)
   setupImagesOnHover($gridItems)
-  initLunrSearchIndexes()
   initTagSearch()
+
+  # Doing this at the get go makes subsequent searches faster
+  # Something about how masonry works?
+  $(".showAllLink").trigger "click"
     

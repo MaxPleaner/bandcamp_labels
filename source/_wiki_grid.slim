@@ -2,7 +2,7 @@ div.grid
   - md_erb_files.each do |file|
     - file_html, file_metadata = process_md_erb(file)
     div.grid-item
-      = file_title(file)
+      div.grid-item-title = file_title(file)
       hr
       - if file_metadata.to_h.blank?
         - file_metadata.tags = ["unknown"]

@@ -16,6 +16,7 @@ gem "therubyracer"
 # guard / livereload
 gem "guard"
 gem "childprocess"
+gem "guard-shell"
 gem 'guard-livereload', '~> 2.5', require: false
 gem 'rb-inotify'
 gem 'livereload'
