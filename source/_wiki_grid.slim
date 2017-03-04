@@ -2,8 +2,6 @@ div.grid
   - md_erb_files.each do |file|
     - file_html, file_metadata = process_md_erb(file)
     div.grid-item
-      div.grid-item-title = file_title(file)
-      hr
       - if file_metadata.to_h.blank?
         - file_metadata.tags = ["unknown"]
       div.metadata data-metadata="" = file_metadata.to_h.to_json
