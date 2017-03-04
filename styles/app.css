@@ -12,10 +12,10 @@ a, a:visited, a:hover {
   border: 1px solid black;
   margin: 2px;
   padding: 2px;
-  width: 100px;
+  min-width: 100px;
   border-radius: 5px; }
 
-.metadata.hidden {
+.metadata.hidden, .tagLink.hidden, .hidden.showAllLink {
   display: none; }
 
 .tagLink, .showAllLink {
@@ -53,7 +53,9 @@ hr {
 
 .content {
   background-color: rgba(253, 195, 188, 0.25);
-  padding: 2px; }
+  padding: 2px;
+  max-width: 150px;
+  word-break: break-all; }
 
 .selected-grid-item {
   box-shadow: 0 0 5px orange;
