@@ -3,6 +3,7 @@ require 'open-uri'
 
 module Seed
   def self.create(name:,content:,tags:)
+    name.gsub!("/", "_")
     raise ArgumentError unless [name, content].all? { |x| x.is_a?(String) && x.length > 0 }
     raise ArgumentError unless tags.is_a?(Array) && tags.length > 0
     path = (ENV["STATIC_SEED_PATH"] || `pwd`.chomp) + "/source/markdown/#{name}.md.erb"
