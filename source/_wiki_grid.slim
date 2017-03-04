@@ -4,6 +4,8 @@ div.grid
     div.grid-item
       = file_title(file)
       hr
+      - if file_metadata.to_h.blank?
+        - file_metadata.tags = ["unknown"]
       div.metadata data-metadata="" = file_metadata.to_h.to_json
       div.content
         == file_html

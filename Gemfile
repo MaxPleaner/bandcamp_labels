@@ -40,3 +40,6 @@ gem 'random-word'
 
 # html parsing
 gem 'nokogiri'
+
+# open uri redirections
+gem 'open_uri_redirections'
