@@ -34,7 +34,9 @@ a, a:visited, a:hover {
   clear: left; }
 
 .showAllLink {
-  border: 1px solid darkred; }
+  border: 3px solid darkred;
+  font-weight: bold;
+  padding: 10px; }
 
 .grid {
   clear: both;

@@ -102,7 +102,7 @@ indexTagForSearch = (tag, idx) ->
 
 
 addButtonToShowAll = ($grid, $navbarTagsMenu) ->
-  $button = $("<a></a>").html("all")
+  $button = $("<a></a>").html("show all labels (allow 10-15 seconds to load)")
                         .addClass("showAllLink")
                         .attr("href", "#")
   $navbarTagsMenu.prepend($button)
