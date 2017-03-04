@@ -45,9 +45,3 @@ words and scanning the results for labels) is that bandcamp doesn't offer an API
 or even a good HTML page for searching labels, nevermind labels by genre. The
 search page that is used to seed shows artists and labels in the same list. 
 Each request only shows 15 items, so the number of labels indexed per request is quite low.
-
-### Development / Goals
-
-The bandcamp-scraper tool is not returning all the results. For example, a "metal"
-query only returns 8 labels. This is obviously not all the ones that exist. So I need
-to figure out how to get a larger number for this website to actually be useful. 
