@@ -37,3 +37,6 @@ gem "activesupport"
 
 # random word (for seeding with labels)
 gem 'random-word'
+
+# html parsing
+gem 'nokogiri'
