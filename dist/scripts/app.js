@@ -1,5 +1,5 @@
 (function() {
-  var addButtonToShowAll, buildNavbarTagsMenu, filterGrid, gridItemOnClick, gridItemOnMouseenter, gridItemOnMouseleave, hideAllContent, isotopeFilterFn, loadInitialState, metadataOnClick, refreshGrid, setupGrid, setupImagesOnHover, setupMetadata, showAllButtonOnClick, togglingContentOnMouseenter, togglingContentOnMouseleave;
+  var addButtonToShowAll, buildNavbarTagsMenu, filterGrid, gridItemOnClick, gridItemOnMouseenter, gridItemOnMouseleave, hideAllContent, indexTagForSearch, initLunrSearchIndexes, initTagSearch, isotopeFilterFn, loadInitialState, metadataOnClick, refreshGrid, setupGrid, setupImagesOnHover, setupMetadata, showAllButtonOnClick, togglingContentOnMouseenter, togglingContentOnMouseleave;
 
   gridItemOnClick = function($grid, e) {
     var $content, $el, contentAlreadyHidden;
@@ -98,9 +98,11 @@
     var $navbarTagsMenu;
     $metadata.addClass("hidden");
     $navbarTagsMenu = buildNavbarTagsMenu($grid, $metadata);
-    $("#nav").append($navbarTagsMenu);
-    return $(".tagLink").on("click", curry(metadataOnClick)($grid));
+    $nav.append($navbarTagsMenu);
+    return $nav.on(".tagLink", "click", curry(metadataOnClick)($grid));
   };
+
+  window.tagLinks = {};
 
   buildNavbarTagsMenu = function($grid, $metadata) {
     var $navbarTagsMenu, tags;
@@ -109,19 +111,27 @@
       var $node, nodeJson;
       $node = $(node);
       nodeJson = $node.text();
-      console.log(nodeJson);
       tags = JSON.parse(nodeJson)['tags'];
       $node.parents(".grid-item").data("tags", tags);
       return tags;
     });
     tags = Array.from(new Set(tags)).sort();
-    tags.forEach(function(tag) {
-      var tagLink;
-      tagLink = $("<a></a>").html(tag).addClass("tagLink").attr("href", "#");
-      return $navbarTagsMenu.append(tagLink);
+    tags.forEach(function(tag, tdx) {
+      var $tagLink;
+      indexTagForSearch(tag, idx);
+      $tagLink = $("<a></a>").html(tag).addClass("tagLink").addClass("hidden").attr("href", "#");
+      tagLinks[tag] = $tagLink;
+      return $navbarTagsMenu.append($tagLink);
     });
     addButtonToShowAll($grid, $navbarTagsMenu);
     return $navbarTagsMenu;
+  };
+
+  indexTagForSearch = function(tag, idx) {
+    return lunrTagsIndex.add({
+      id: idx,
+      name: tag
+    });
   };
 
   addButtonToShowAll = function($grid, $navbarTagsMenu) {
@@ -146,16 +156,55 @@
     });
   };
 
+  initLunrSearchIndexes = function() {
+    return window.lunrTagsIndex = lunr(function() {
+      this.field('name');
+      return this.ref('id');
+    });
+  };
+
+  window.last_search_text_typed_at = void 0;
+
+  window.showingTags = [];
+
+  initTagSearch = function() {
+    var $search_input;
+    $search_input = $nav.find("#tag-search");
+    return $search_input.on("keydown", function(e) {
+      var last_search_text_typed_at;
+      last_search_text_typed_at = (new Date()).getTime();
+      return setTimeout(function() {
+        var current_time, results, tag_to_show, tags_to_hide, text;
+        current_time = (new Date()).getTime();
+        if (current_time - last_search_text_typed_at > 250) {
+          text = $search_input.val();
+          results = lunrTagsIndex.search(text);
+          tags_to_hide = showingTags.forEach(function($tag) {
+            return $tag.hide();
+          });
+          window.showingTags = [];
+          tag_to_show = results.map(function(result_tag) {
+            return tagLinks[result_tag];
+          });
+          debugger;
+        }
+      }, 250);
+    });
+  };
+
   $(function() {
-    var $grid, $gridItems, $metadata, $togglingContent;
+    var $grid, $gridItems, $metadata, $nav, $togglingContent;
     $grid = $(".grid");
     $gridItems = $grid.find(".grid-item");
     $togglingContent = $gridItems.find(".content");
     $metadata = $grid.find(".metadata");
+    $nav = $("#nav");
     setupMetadata($grid, $metadata);
     loadInitialState($grid);
     setupGrid($grid, $gridItems, $togglingContent);
-    return setupImagesOnHover($gridItems);
+    setupImagesOnHover($gridItems);
+    initLunrSearchIndexes();
+    return initTagSearch();
   });
 
 }).call(this);

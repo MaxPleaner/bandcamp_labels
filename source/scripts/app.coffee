@@ -71,26 +71,35 @@ metadataOnClick = ($grid, e) ->
 setupMetadata = ($grid, $metadata) ->
   $metadata.addClass "hidden"
   $navbarTagsMenu = buildNavbarTagsMenu($grid, $metadata)
-  $("#nav").append($navbarTagsMenu)
-  $(".tagLink").on "click", curry(metadataOnClick)($grid)
+  $nav.append($navbarTagsMenu)
+  $nav.on ".tagLink", "click", curry(metadataOnClick)($grid)
 
+window.tagLinks = {}
 buildNavbarTagsMenu = ($grid, $metadata) ->
   $navbarTagsMenu = $("<div id='navbarTags'></div>")
   tags = $.map $metadata, (node) ->
     $node = $ node
     nodeJson = $node.text()
-    console.log(nodeJson)
     tags = JSON.parse(nodeJson)['tags']
     $node.parents(".grid-item").data("tags", tags)
     tags
   tags = Array.from(new Set(tags)).sort()
-  tags.forEach (tag) ->
-      tagLink = $("<a></a>").html(tag)
+  tags.forEach (tag, tdx) ->
+      indexTagForSearch(tag, idx)
+      $tagLink = $("<a></a>").html(tag)
                             .addClass("tagLink")
+                            .addClass("hidden")
                             .attr("href", "#")
-      $navbarTagsMenu.append(tagLink)
+      tagLinks[tag] = $tagLink
+      $navbarTagsMenu.append($tagLink)
   addButtonToShowAll($grid, $navbarTagsMenu)
   return $navbarTagsMenu
+
+indexTagForSearch = (tag, idx) ->
+  lunrTagsIndex.add
+    id: idx
+    name: tag
+
 
 addButtonToShowAll = ($grid, $navbarTagsMenu) ->
   $button = $("<a></a>").html("all")
@@ -109,6 +118,29 @@ setupImagesOnHover = ($gridItems) ->
   $gridItems.find("img").on "mouseenter", (e) ->
     $img = $ e.currentTarget
     $img.attr("src", $img.data('src'))
+
+initLunrSearchIndexes = ->
+  window.lunrTagsIndex = lunr ->
+    this.field 'name'
+    this.ref 'id'
+
+window.last_search_text_typed_at = undefined
+window.showingTags = []
+initTagSearch = ->
+  $search_input = $nav.find("#tag-search")
+  $search_input.on "keydown", (e) ->
+    last_search_text_typed_at = (new Date()).getTime()
+    setTimeout ->
+      current_time = (new Date()).getTime()
+      if current_time - last_search_text_typed_at > 250
+        text = $search_input.val()
+        results = lunrTagsIndex.search text
+        tags_to_hide = showingTags.forEach ($tag) -> $tag.hide()
+        window.showingTags = []
+        tag_to_show = results.map (result_tag) ->
+          tagLinks[result_tag]
+        debugger
+    , 250
   
 $ () ->
 
@@ -116,9 +148,12 @@ $ () ->
   $gridItems       = $grid.find ".grid-item"
   $togglingContent = $gridItems.find ".content"
   $metadata        = $grid.find ".metadata"
+  $nav             = $("#nav")
   
   setupMetadata($grid, $metadata)
   loadInitialState($grid)
   setupGrid($grid, $gridItems, $togglingContent)
   setupImagesOnHover($gridItems)
+  initLunrSearchIndexes()
+  initTagSearch()
     

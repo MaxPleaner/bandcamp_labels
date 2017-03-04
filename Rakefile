@@ -55,6 +55,8 @@ task :get_missing_tags do
   end.compact
   len = datas.length
   datas.each_with_index do |(path, text), idx|
+    next if idx < 125
+    sleep 1
     puts "#{idx}/#{len}".yellow
     url = text.scan(/href='(.+)'\>/).flatten.pop
     label_page = Nokogiri.parse open url
