@@ -136,7 +136,7 @@
 
   addButtonToShowAll = function($grid, $navbarTagsMenu) {
     var $button;
-    $button = $("<a></a>").html("all").addClass("showAllLink").attr("href", "#");
+    $button = $("<a></a>").html("show all labels (allow 10-15 seconds to load)").addClass("showAllLink").attr("href", "#");
     $navbarTagsMenu.prepend($button);
     return $button.on("click", curry(showAllButtonOnClick)($grid));
   };
