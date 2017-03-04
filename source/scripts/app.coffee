@@ -1,15 +1,15 @@
-gridItemOnClick = ($grid, e) ->
-  e.stopPropagation()
-  $el = $ e.currentTarget
-  $content = $ $el.find(".content")[0]
-  if $grid.find(".content:not(.hidden)").length > 0
-    contentAlreadyHidden = $content.hasClass "hidden"
-    hideAllContent($grid)
-    if contentAlreadyHidden
-      $content.removeClass("hidden")
-  else
-    $content.removeClass("hidden")
-  refreshGrid($grid)
+# gridItemOnClick = ($grid, e) ->
+#   e.stopPropagation()
+#   $el = $ e.currentTarget
+#   $content = $ $el.find(".content")[0]
+#   if $grid.find(".content:not(.hidden)").length > 0
+#     contentAlreadyHidden = $content.hasClass "hidden"
+#     hideAllContent($grid)
+#     if contentAlreadyHidden
+#       $content.removeClass("hidden")
+#   else
+#     $content.removeClass("hidden")
+#   refreshGrid($grid)
   
 hideAllContent = ($grid) ->
   $grid.find(".content").addClass("hidden")
@@ -26,28 +26,28 @@ isotopeFilterFn = () ->
 filterGrid = ($grid) ->
   $grid.isotope filter: isotopeFilterFn
   
-gridItemOnMouseenter = (e) ->
-  $(e.currentTarget).addClass("selected-grid-item")
+# gridItemOnMouseenter = (e) ->
+#   $(e.currentTarget).addClass("selected-grid-item")
   
-gridItemOnMouseleave = (e) ->
-  $(e.currentTarget).removeClass("selected-grid-item")
+# gridItemOnMouseleave = (e) ->
+#   $(e.currentTarget).removeClass("selected-grid-item")
 
-togglingContentOnMouseenter = (e) ->
-  $(e.currentTarget).parents(".grid-item")
-                    .removeClass("selected-grid-item")
+# togglingContentOnMouseenter = (e) ->
+#   $(e.currentTarget).parents(".grid-item")
+#                     .removeClass("selected-grid-item")
 
-togglingContentOnMouseleave = (e) ->
-  $(e.currentTarget).parents(".grid-item")
-                    .addClass("selected-grid-item")
+# togglingContentOnMouseleave = (e) ->
+#   $(e.currentTarget).parents(".grid-item")
+#                     .addClass("selected-grid-item")
 
 setupGrid = ($grid, $gridItems, $togglingContent) ->
-  $gridItems.on "click", curry(gridItemOnClick)($grid)
-  $togglingContent.on "click", (e) -> e.stopPropagation()
-  $togglingContent.addClass "hidden"
-  $gridItems.on "mouseenter", gridItemOnMouseenter
-  $gridItems.on "mouseleave", gridItemOnMouseleave
-  $togglingContent.on "mouseenter", togglingContentOnMouseenter
-  $togglingContent.on "mouseleave", togglingContentOnMouseleave
+  # $gridItems.on "click", curry(gridItemOnClick)($grid)
+  # $togglingContent.on "click", (e) -> e.stopPropagation()
+  # $togglingContent.addClass "hidden"
+  # $gridItems.on "mouseenter", gridItemOnMouseenter
+  # $gridItems.on "mouseleave", gridItemOnMouseleave
+  # $togglingContent.on "mouseenter", togglingContentOnMouseenter
+  # $togglingContent.on "mouseleave", togglingContentOnMouseleave
   $grid.isotope
     itemSelector: '.grid-item'
     layoutMode: 'fitRows'
@@ -99,7 +99,6 @@ indexTagForSearch = (tag, idx) ->
   lunrTagsIndex.add
     id: idx
     name: tag
-
 
 addButtonToShowAll = ($grid, $navbarTagsMenu) ->
   $button = $("<a></a>").html("show all labels (allow 10-15 seconds to load)")
