@@ -30,15 +30,21 @@ script and voila, you have a public website.
 
 This repo is already seeded with the contents of the site as visible
 [here](http://maxpleaner.github.io/bandcamp_labels). So there are 1k+ markdown
-files in `source/markdown`, each representing a single level. `dist/index.html`
+files in `source/markdown`, each representing a single label. `dist/index.html`
 contains a contatenated index of all these. 
 
 To seed this many listings, I started with my favorite genres then went through
 the 1000 most popular words in the english language.
 `rake seed_most_common_words` does this.
 
-To seed even more listings, it's possible to run `rake seed_random` which queries
-random words from the dictionary on a loop. 
+To seed even more labels, it's possible to run `rake seed_random` which queries
+random words from the dictionary on a loop.
+
+_Caveat_ The reason these inefficient seeding methods are used (searching random
+words and scanning the results for labels) is that bandcamp doesn't offer an API
+or even a good HTML page for searching labels, nevermind labels by genre. The
+search page that is used to seed shows artists and labels in the same list. 
+Each request only shows 15 items, so the number of labels indexed per request is quite low.
 
 ### Development / Goals
 
