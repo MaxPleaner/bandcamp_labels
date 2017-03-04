@@ -1,22 +1,5 @@
 (function() {
-  var addButtonToShowAll, buildNavbarTagsMenu, filterGrid, gridItemOnClick, gridItemOnMouseenter, gridItemOnMouseleave, hideAllContent, indexTagForSearch, initLunrSearchIndexes, initTagSearch, isotopeFilterFn, loadInitialState, metadataOnClick, refreshGrid, setupGrid, setupImagesOnHover, setupMetadata, showAllButtonOnClick, togglingContentOnMouseenter, togglingContentOnMouseleave;
-
-  gridItemOnClick = function($grid, e) {
-    var $content, $el, contentAlreadyHidden;
-    e.stopPropagation();
-    $el = $(e.currentTarget);
-    $content = $($el.find(".content")[0]);
-    if ($grid.find(".content:not(.hidden)").length > 0) {
-      contentAlreadyHidden = $content.hasClass("hidden");
-      hideAllContent($grid);
-      if (contentAlreadyHidden) {
-        $content.removeClass("hidden");
-      }
-    } else {
-      $content.removeClass("hidden");
-    }
-    return refreshGrid($grid);
-  };
+  var addButtonToShowAll, buildNavbarTagsMenu, filterGrid, hideAllContent, indexTagForSearch, initLunrSearchIndexes, initTagSearch, isotopeFilterFn, loadInitialState, metadataOnClick, refreshGrid, setupGrid, setupImagesOnHover, setupMetadata, showAllButtonOnClick;
 
   hideAllContent = function($grid) {
     return $grid.find(".content").addClass("hidden");
@@ -40,32 +23,7 @@
     });
   };
 
-  gridItemOnMouseenter = function(e) {
-    return $(e.currentTarget).addClass("selected-grid-item");
-  };
-
-  gridItemOnMouseleave = function(e) {
-    return $(e.currentTarget).removeClass("selected-grid-item");
-  };
-
-  togglingContentOnMouseenter = function(e) {
-    return $(e.currentTarget).parents(".grid-item").removeClass("selected-grid-item");
-  };
-
-  togglingContentOnMouseleave = function(e) {
-    return $(e.currentTarget).parents(".grid-item").addClass("selected-grid-item");
-  };
-
   setupGrid = function($grid, $gridItems, $togglingContent) {
-    $gridItems.on("click", curry(gridItemOnClick)($grid));
-    $togglingContent.on("click", function(e) {
-      return e.stopPropagation();
-    });
-    $togglingContent.addClass("hidden");
-    $gridItems.on("mouseenter", gridItemOnMouseenter);
-    $gridItems.on("mouseleave", gridItemOnMouseleave);
-    $togglingContent.on("mouseenter", togglingContentOnMouseenter);
-    $togglingContent.on("mouseleave", togglingContentOnMouseleave);
     return $grid.isotope({
       itemSelector: '.grid-item',
       layoutMode: 'fitRows'
