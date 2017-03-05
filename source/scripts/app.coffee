@@ -1,3 +1,4 @@
+
 # gridItemOnClick = ($grid, e) ->
 #   e.stopPropagation()
 #   $el = $ e.currentTarget
@@ -38,19 +39,12 @@ setupGrid = ($grid) ->
   $grid.on "arrangeComplete", finishFilterLoading
   $grid.isotope
     itemSelector: '.grid-item'
-    layoutMode: 'masonry'
+    layoutMode: 'fitRows'
     filter: isotopeFilterFn
   window.has_isotope = true
 
-loadInitialState = ($grid) ->
-  currentTag = window.location.hash.replace("#", "")
-  if currentTag.length > 0
-    window.currentTag = currentTag
-    setupGrid($grid)
-
 metadataOnClick = ($grid, e) ->
   tag = $(e.currentTarget).text()
-  window.location.hash = tag
   window.currentTag = tag
   setupGrid($grid)
   e.preventDefault()
@@ -95,7 +89,6 @@ addButtonToShowAll = ($grid, $navbarTagsMenu) ->
   $button.on "click", curry(showAllButtonOnClick)($grid)
   
 showAllButtonOnClick = ($grid, e) ->
-  window.location.hash = ""
   window.currentTag = undefined
   setupGrid($grid)
   e.preventDefault()
@@ -127,23 +120,16 @@ initTagSearch = ->
         tags_to_show.forEach ($tag) -> $tag.show()
         window.showingTags = tags_to_show
     , 500
-  
-$ () ->
 
+window.initApp = ->    
   window.$grid            = $ ".grid"
   window.$gridItems       = $grid.find ".grid-item"
   window.$togglingContent = $gridItems.find ".content"
   window.$metadata        = $grid.find ".metadata"
   window.$nav             = $("#nav")
-  
+
   initLunrSearchIndexes()
   setupMetadata($grid, $metadata)
-  loadInitialState($grid)
   setupGrid($grid)
   setupImagesOnHover($gridItems)
-  initTagSearch()
-
-  # Doing this at the get go makes subsequent searches faster
-  # Something about how masonry works?
-  $(".showAllLink").trigger "click"
-    
+  initTagSearch()      

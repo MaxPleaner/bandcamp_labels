@@ -15,7 +15,7 @@ a, a:visited, a:hover {
   min-width: 100px;
   border-radius: 5px; }
 
-.metadata.hidden, .tagLink.hidden, .hidden.showAllLink {
+.metadata.hidden, .tagLink.hidden, .hidden.showAllLink, #done-loading.hidden {
   display: none; }
 
 .tagLink, .showAllLink {
@@ -56,7 +56,9 @@ hr {
 .content {
   background-color: rgba(253, 195, 188, 0.25);
   padding: 2px;
-  max-width: 150px;
+  width: 150px;
+  height: 220px;
+  overflow-y: auto;
   word-break: break-all; }
 
 .selected-grid-item {

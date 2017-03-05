@@ -8,6 +8,12 @@ html
     link rel='stylesheet' href='./styles/pace.css'
     script src='./scripts/jquery-3.1.0.min.js'
     script src='./scripts/pace.min.js'
+    coffee:
+      Pace.on "done", ->
+        $ ->
+          $("#done-loading").removeClass "hidden"
+          window.initApp()
+
     script src='./scripts/isotope.min.js'
     script src='./scripts/curry.min.js'
     script src='./scripts/app.js'
@@ -15,15 +21,17 @@ html
 
   body
 
-    div#intro
-      h3 bandcamp labels
-      h5
-        a href='http://github.com/maxpleaner/bandcamp_labels'
-          | project source
-      h5 bandcamp does not have a listing of record labels on its site.
-      h5 this site displays such information, which was obtained by scraping.
-      h5 hover over images boxes to load them
-      
-    container#all-content
-      == render("_nav.slim")
-      == render("_wiki_grid.slim")
+    div#done-loading.hidden
+
+      div#intro
+        h3 bandcamp labels
+        h5
+          a href='http://github.com/maxpleaner/bandcamp_labels'
+            | project source
+        h5 bandcamp does not have a listing of record labels on its site.
+        h5 this site displays such information, which was obtained by scraping.
+        h5 hover over images boxes to load them
+        
+      container#all-content
+        == render("_nav.slim")
+        == render("_wiki_grid.slim")
