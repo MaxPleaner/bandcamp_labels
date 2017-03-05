@@ -23,49 +23,36 @@ isotopeFilterFn = () ->
     isVisible = true
   return isVisible
 
-filterGrid = ($grid) ->
-  $grid.isotope filter: isotopeFilterFn
-  
-# gridItemOnMouseenter = (e) ->
-#   $(e.currentTarget).addClass("selected-grid-item")
-  
-# gridItemOnMouseleave = (e) ->
-#   $(e.currentTarget).removeClass("selected-grid-item")
+initFilterLoading = ->
+  window.$filterLoadingNote = $ """
+    <b> loading </b>
+  """
+  $nav.append $filterLoadingNote
 
-# togglingContentOnMouseenter = (e) ->
-#   $(e.currentTarget).parents(".grid-item")
-#                     .removeClass("selected-grid-item")
+finishFilterLoading = ->
+  $filterLoadingNote.remove()
 
-# togglingContentOnMouseleave = (e) ->
-#   $(e.currentTarget).parents(".grid-item")
-#                     .addClass("selected-grid-item")
-
-setupGrid = ($grid, $gridItems, $togglingContent) ->
-  # $gridItems.on "click", curry(gridItemOnClick)($grid)
-  # $togglingContent.on "click", (e) -> e.stopPropagation()
-  # $togglingContent.addClass "hidden"
-  # $gridItems.on "mouseenter", gridItemOnMouseenter
-  # $gridItems.on "mouseleave", gridItemOnMouseleave
-  # $togglingContent.on "mouseenter", togglingContentOnMouseenter
-  # $togglingContent.on "mouseleave", togglingContentOnMouseleave
+setupGrid = ($grid) ->
+  $grid.isotope("destroy") if window.has_isotope
+  initFilterLoading()
+  $grid.on "arrangeComplete", finishFilterLoading
   $grid.isotope
     itemSelector: '.grid-item'
-    layoutMode: 'fitRows'
-  
-refreshGrid = ($grid) ->
-  $grid.isotope() # no need to re-supply initialization options
+    layoutMode: 'masonry'
+    filter: isotopeFilterFn
+  window.has_isotope = true
 
 loadInitialState = ($grid) ->
   currentTag = window.location.hash.replace("#", "")
   if currentTag.length > 0
     window.currentTag = currentTag
-    filterGrid($grid)
+    setupGrid($grid)
 
 metadataOnClick = ($grid, e) ->
   tag = $(e.currentTarget).text()
   window.location.hash = tag
   window.currentTag = tag
-  filterGrid($grid)
+  setupGrid($grid)
   e.preventDefault()
 
 setupMetadata = ($grid, $metadata) ->
@@ -101,7 +88,7 @@ indexTagForSearch = (tag, idx) ->
     name: tag
 
 addButtonToShowAll = ($grid, $navbarTagsMenu) ->
-  $button = $("<a></a>").html("show all labels (allow 10-15 seconds to load)")
+  $button = $("<a></a>").html("show all labels")
                         .addClass("showAllLink")
                         .attr("href", "#")
   $navbarTagsMenu.prepend($button)
@@ -110,7 +97,7 @@ addButtonToShowAll = ($grid, $navbarTagsMenu) ->
 showAllButtonOnClick = ($grid, e) ->
   window.location.hash = ""
   window.currentTag = undefined
-  filterGrid($grid)
+  setupGrid($grid)
   e.preventDefault()
 
 setupImagesOnHover = ($gridItems) ->
@@ -152,7 +139,7 @@ $ () ->
   initLunrSearchIndexes()
   setupMetadata($grid, $metadata)
   loadInitialState($grid)
-  setupGrid($grid, $gridItems, $togglingContent)
+  setupGrid($grid)
   setupImagesOnHover($gridItems)
   initTagSearch()
 

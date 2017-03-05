@@ -1,5 +1,5 @@
 (function() {
-  var addButtonToShowAll, buildNavbarTagsMenu, filterGrid, hideAllContent, indexTagForSearch, initLunrSearchIndexes, initTagSearch, isotopeFilterFn, loadInitialState, metadataOnClick, refreshGrid, setupGrid, setupImagesOnHover, setupMetadata, showAllButtonOnClick;
+  var addButtonToShowAll, buildNavbarTagsMenu, finishFilterLoading, hideAllContent, indexTagForSearch, initFilterLoading, initLunrSearchIndexes, initTagSearch, isotopeFilterFn, loadInitialState, metadataOnClick, setupGrid, setupImagesOnHover, setupMetadata, showAllButtonOnClick;
 
   hideAllContent = function($grid) {
     return $grid.find(".content").addClass("hidden");
@@ -17,21 +17,27 @@
     return isVisible;
   };
 
-  filterGrid = function($grid) {
-    return $grid.isotope({
+  initFilterLoading = function() {
+    window.$filterLoadingNote = $("<b> loading </b>");
+    return $nav.append($filterLoadingNote);
+  };
+
+  finishFilterLoading = function() {
+    return $filterLoadingNote.remove();
+  };
+
+  setupGrid = function($grid) {
+    if (window.has_isotope) {
+      $grid.isotope("destroy");
+    }
+    initFilterLoading();
+    $grid.on("arrangeComplete", finishFilterLoading);
+    $grid.isotope({
+      itemSelector: '.grid-item',
+      layoutMode: 'masonry',
       filter: isotopeFilterFn
     });
-  };
-
-  setupGrid = function($grid, $gridItems, $togglingContent) {
-    return $grid.isotope({
-      itemSelector: '.grid-item',
-      layoutMode: 'fitRows'
-    });
-  };
-
-  refreshGrid = function($grid) {
-    return $grid.isotope();
+    return window.has_isotope = true;
   };
 
   loadInitialState = function($grid) {
@@ -39,7 +45,7 @@
     currentTag = window.location.hash.replace("#", "");
     if (currentTag.length > 0) {
       window.currentTag = currentTag;
-      return filterGrid($grid);
+      return setupGrid($grid);
     }
   };
 
@@ -48,7 +54,7 @@
     tag = $(e.currentTarget).text();
     window.location.hash = tag;
     window.currentTag = tag;
-    filterGrid($grid);
+    setupGrid($grid);
     return e.preventDefault();
   };
 
@@ -94,7 +100,7 @@
 
   addButtonToShowAll = function($grid, $navbarTagsMenu) {
     var $button;
-    $button = $("<a></a>").html("show all labels (allow 10-15 seconds to load)").addClass("showAllLink").attr("href", "#");
+    $button = $("<a></a>").html("show all labels").addClass("showAllLink").attr("href", "#");
     $navbarTagsMenu.prepend($button);
     return $button.on("click", curry(showAllButtonOnClick)($grid));
   };
@@ -102,7 +108,7 @@
   showAllButtonOnClick = function($grid, e) {
     window.location.hash = "";
     window.currentTag = void 0;
-    filterGrid($grid);
+    setupGrid($grid);
     return e.preventDefault();
   };
 
@@ -161,7 +167,7 @@
     initLunrSearchIndexes();
     setupMetadata($grid, $metadata);
     loadInitialState($grid);
-    setupGrid($grid, $gridItems, $togglingContent);
+    setupGrid($grid);
     setupImagesOnHover($gridItems);
     initTagSearch();
     return $(".showAllLink").trigger("click");
